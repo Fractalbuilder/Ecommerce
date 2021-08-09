@@ -1,0 +1,26 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>Active Listings</h2>
+    <div class="form-row">
+        {% for listing in listings %}
+        <div id="listing" class="col-md-6 col-lg-6">
+            <br>
+            <h3><b>{{ listing.title }}</b></h3>
+
+            {% if listing.img_url == "" %}
+                <img id="listing_img" src="https://1vyf1h2a37bmf88hy3i8ce9e-wpengine.netdna-ssl.com/wp-content/themes/public/img/noimgavailable.jpg" alt="">
+            {% else %}
+                <img id="listing_img" src="{{ listing.img_url }}" alt="">
+            {% endif%}
+            <p id="listing_info"><b>Price:</b> {{ listing.price }}</p>
+            <p id="listing_info"><b>Category:</b> {{ listing.category }}</p>
+            <p id="listing_info"><b>Description:</b> {{ listing.description }}</p>
+            <br>
+            <button onclick="location.href='/auctions/{{ listing.id }}'">View</button>   
+            <br>
+            <br>
+        </div>
+        {% endfor %}
+    </div>
+{% endblock %}

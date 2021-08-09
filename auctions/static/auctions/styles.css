@@ -1,0 +1,44 @@
+body {
+    padding: 10px;
+}
+
+#listing_img {
+    padding: 0;
+    display: block;
+    margin: 0 auto auto 0;
+    max-height: 300px;
+    max-width: 400px;
+}
+
+#listing_info {
+    margin: 0 0 0 0;
+}
+
+#listing {
+  border-style: solid;
+  border-width: thin;
+  border-color: grey;
+}
+
+.formSection {
+  margin-bottom: 12px;
+}
+
+.formItem {
+  margin-bottom: 8px;
+}
+
+.formConfirmation {
+  color: green;
+  margin-bottom: 8px;
+}
+
+.formStatement {
+  color: black;
+  margin-bottom: 8px;
+}
+
+.formWarning {
+  color: red;
+  margin-bottom: 8px;
+}

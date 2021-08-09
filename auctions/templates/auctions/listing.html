@@ -1,0 +1,80 @@
+{% extends "auctions/layout.html" %}
+
+{% block title %}
+    {{ listing.title }}
+{% endblock %}
+
+{% block body %}
+    <h3><b>{{ listing.title }}</b></h3>
+    <div class="form-row">
+        <div class="col-md-4 col-lg-4">
+            {% if listing.img_url == "" %}
+                <img id="listing_img" src="https://1vyf1h2a37bmf88hy3i8ce9e-wpengine.netdna-ssl.com/wp-content/themes/public/img/noimgavailable.jpg" alt="">
+            {% else %}
+                <img id="listing_img" src="{{ listing.img_url }}" alt="">
+            {% endif %}
+
+            <p id="listing_info"><b>Price:</b> {{ listing.price }}</p>
+            <p id="listing_info"><b>Category:</b> {{ listing.category }}</p>
+            <p id="listing_info"><b>Description:</b> {{ listing.description }}</p>
+        </div>
+        <br>
+        <div class="col-md-4 col-lg-4">
+            {% if listing.owner_id == user.id %}
+                {% if not auctionClosed %}
+                    <div class="formSection">
+                        <button class="formItem" onclick="location.href='/auctions/close/{{ listing.id }}'">Close Auction</button>
+                    </div>
+                {% else %}
+                    <p class="formStatement">This offer is already closed</p>
+                {% endif %}
+            {% else %}
+                <div class="formSection">
+                    {% if isWatched == True %}
+                        <button class="formItem" onclick="location.href='/auctions/update_watchlist/Delete/{{ listing.id }}'">Delete from Watchlist</button>
+                    {% else %}
+                        <button class="formItem" onclick="location.href='/auctions/update_watchlist/Add/{{ listing.id }}'">Add to Watchlist</button>
+                    {% endif %}
+                </div>
+
+                {% if not auctionClosed %}
+                    {% if isBidValid is True %}
+                        <p class="formConfirmation">Bid accepted</p>
+                    {% elif isBidValid is False %}
+                        <p class="formWarning">Invalid bid</p>
+                    {% endif %}
+                    <div class="form-group">
+                        <form action='/auctions/{{ listing.id }}' method="post">
+                            {% csrf_token %}
+                            {{ bidForm.bid_amount }}
+
+                            <input type=submit value="Save">
+                        </form>
+                    </div>
+                {% else %}
+                    <p class="formStatement">This offer is already closed</p>
+                    {% if auctionWinner %}
+                        <h4>Congratulations. You won the auction</h4>
+                    {% endif %}
+                {% endif %}
+            {% endif %}
+        </div>
+        <div class="col-md-4 col-lg-4">
+            {% if not auctionClosed %}
+                <h3>Comments</h3>
+                <div class="form-group">
+                    <form action='add_comment/{{ listing.id }}' method="post">
+                        {% csrf_token %}
+                        {{ commentForm.comment }}
+
+                        <input type=submit value="Save">
+                    </form>
+                </div>
+                <br>
+                {% for comment in comments %}
+                    <p><b>{{ comment.user }}:</b> {{ comment.comment }}</p>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

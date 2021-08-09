@@ -1,0 +1,48 @@
+{% extends "auctions/layout.html" %}
+{% load static %}
+
+{% block title %}
+    New Listing
+{% endblock %}
+
+{% block body %}
+<h2>New Listing</h2>
+
+{% if existing %}
+    <p style="color:red"><b>This listing already exists.</b></p>
+{% endif %}
+
+{% for field in form %}
+    {% for error in field.errors %}
+        <p style="color:red"><b>
+            {{ field.label }}: {{ error }}</b>
+        </p>
+    {% endfor %}
+{% endfor %}
+
+<br>
+<div class="form-group">
+    <form action="{% url 'createListing' %}" method="post">
+        {% csrf_token %}
+        <div class="form-column">
+            <div class="form-row">
+                <div style="margin-right: 5px"></div>
+                {{ form.title }}
+                <div style="margin-right: 10px"></div>
+                {{ form.category }}
+            </div>
+            <br>
+            <div class="form-row">
+                <div style="margin-right: 5px"></div>
+                {{ form.price }}
+                <div style="margin-right: 10px"></div>
+                {{ form.description }}
+            </div>
+        </div>
+        <br>
+        {{ form.img_url }}
+        <br>
+        <input type=submit value="Save">
+    </form>
+</div>
+{% endblock %}
